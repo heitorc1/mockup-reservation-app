@@ -38,7 +38,7 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
             display: "flex",
             flexDirection: "column",
             flexWrap: "wrap",
-            maxHeight: "5rem",
+            height: "5rem",
           }}
         />
 
