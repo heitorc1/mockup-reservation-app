@@ -12,7 +12,7 @@ export const AppFooter: React.FC = () => {
       align="center"
     >
       <Text>Ipanema Quadras</Text>
-      <Text>Telefone (64)99258-2075</Text>
+      <Text>Telefone (64) 99258-2075</Text>
     </Box>
   );
 };

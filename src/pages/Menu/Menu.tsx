@@ -9,9 +9,9 @@ type Props = {
 
 export const Menu: React.FC<Props> = ({ size }) => {
   useEffect(() => {
-    // const url =
-    //   "https://drive.google.com/file/d/1aN0VbaK37rLrInZG2i7vJBwN0AkmDrPt/view";
-    // window.location.href = url;
+    const url =
+      "https://drive.google.com/file/d/1aN0VbaK37rLrInZG2i7vJBwN0AkmDrPt/view";
+    window.location.href = url;
   }, []);
 
   return (

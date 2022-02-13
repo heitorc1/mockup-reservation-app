@@ -14,7 +14,7 @@ const addDays = (date: Date, days: number) => {
 
 export const ReservationCalendar: React.FC<Props> = ({ setDay, day }) => {
   const today = new Date();
-  const twoWeeks = addDays(new Date(), 14);
+  const oneYear = addDays(new Date(), 365);
 
   const handleSelect = (date: string | string[]) => {
     if (typeof date === "string") {
@@ -29,7 +29,7 @@ export const ReservationCalendar: React.FC<Props> = ({ setDay, day }) => {
         date={day ? day.toISOString() : new Date().toISOString()}
         bounds={[
           today.toISOString().toString(),
-          twoWeeks.toISOString().toString(),
+          oneYear.toISOString().toString(),
         ]}
         onSelect={handleSelect}
         locale="pt-BR"

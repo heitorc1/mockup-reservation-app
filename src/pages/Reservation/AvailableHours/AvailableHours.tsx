@@ -8,11 +8,17 @@ type Props = {
   day: Date;
 };
 
+type DataType = {
+  id: number;
+  day: string;
+  hour: boolean[];
+};
+
 export const AvailableHours: React.FC<Props> = ({ day }) => {
   const [hours, setHours] = useState<boolean[]>([]);
 
   useEffect(() => {
-    const data = DEFAULT;
+    const data: DataType[] = DEFAULT;
     const date = day;
     const month =
       date.getMonth() + 1 < 10
@@ -23,6 +29,14 @@ export const AvailableHours: React.FC<Props> = ({ day }) => {
     const selectedDay = data.filter((row) => row.day === formatedDate);
     setHours(selectedDay[0].hour);
   }, [day]);
+
+  const getLink = (condition: boolean, day: Date, index: number) => {
+    if (!condition) {
+      return `${encodeURIComponent(day.toLocaleDateString())}/${index}`;
+    } else {
+      return "#";
+    }
+  };
 
   const buttonColor = (input: boolean) => {
     if (input) {
@@ -40,10 +54,7 @@ export const AvailableHours: React.FC<Props> = ({ day }) => {
     <>
       {hours ? (
         hours.map((row, index) => (
-          <Link
-            to={`${encodeURIComponent(day.toLocaleDateString())}/${index}`}
-            key={index}
-          >
+          <Link to={getLink(row, day, index)} key={index}>
             <Button
               primary
               color={row ? "statusError" : "statusOk"}
