@@ -19,7 +19,7 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
     setValue(event.target.value);
 
   return (
-    <AppLayout size={size}>
+    <AppLayout size={size} fill={false}>
       <Box flex direction="column" gap="medium" justify="center">
         <Text
           margin={{ bottom: "0" }}
