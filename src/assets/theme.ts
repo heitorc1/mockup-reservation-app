@@ -10,7 +10,8 @@ const theme = {
       secondaryDark: "#c45000",
       statusError: "#FF4040",
       statusWarning: "#FFAA15",
-      statusOk: "#00C781",
+      statusOk: "#00873D",
+      brand: "#fe7f16",
     },
     font: {
       family: "Roboto",

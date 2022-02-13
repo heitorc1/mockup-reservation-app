@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { AppLayout } from "../../components";
 import { Text } from "grommet/components/Text";
 

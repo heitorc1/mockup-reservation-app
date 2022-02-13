@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { Button, Heading, Box, Collapsible, Layer } from "grommet";
-import { FormClose, Notification } from "grommet-icons";
+import { FormClose, LinkPrevious, Notification } from "grommet-icons";
 
 import { AppBar, AppFooter } from "../../components";
+import { Link, useLocation } from "react-router-dom";
 
 type Props = {
   size: string;
   children: React.ReactNode;
+  fill?: boolean;
 };
 
-export const AppLayout: React.FC<Props> = ({ size, children }) => {
+export const AppLayout: React.FC<Props> = ({ size, children, fill = true }) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const location = useLocation();
 
   return (
-    <Box fill>
+    <Box fill={fill} gap="medium">
       <AppBar>
+        {location.pathname !== "/" ? (
+          <Link to="/">
+            <Button icon={<LinkPrevious />} />
+          </Link>
+        ) : null}
         <Heading level="3" margin="none">
           IPANEMA QUADRAS
         </Heading>
@@ -24,7 +32,7 @@ export const AppLayout: React.FC<Props> = ({ size, children }) => {
         />
       </AppBar>
       <Box direction="row" flex overflow={{ horizontal: "hidden" }}>
-        <Box flex align="center" justify="center" gap="medium">
+        <Box flex align="center" justify="center">
           {children}
         </Box>
         {!showSidebar || size !== "small" ? (

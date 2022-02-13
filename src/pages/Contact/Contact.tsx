@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { AppLayout } from "../../components";
 import { Text } from "grommet/components/Text";
+import { Spinner } from "grommet/components/Spinner";
 
 type Props = {
   size: string;
@@ -15,7 +16,7 @@ export const Contact: React.FC<Props> = ({ size }) => {
   return (
     <AppLayout size={size}>
       <Text>Whatsapp</Text>
-      <Text>Carregando...</Text>
+      <Spinner color="secondaryMain" size="large" />
     </AppLayout>
   );
 };

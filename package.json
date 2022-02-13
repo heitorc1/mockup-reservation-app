@@ -10,6 +10,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
+    "axios": "^0.26.0",
     "grommet": "^2.20.1",
     "grommet-icons": "^4.7.0",
     "react": "^17.0.2",
@@ -45,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.22",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.11.0",
     "eslint": "^8.9.0",

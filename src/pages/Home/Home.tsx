@@ -1,3 +1,4 @@
+import { Box } from "grommet/components/Box";
 import React from "react";
 import { AppButton, AppImage, AppLayout } from "../../components";
 
@@ -8,11 +9,21 @@ type Props = {
 export const Home: React.FC<Props> = ({ size }) => {
   return (
     <AppLayout size={size}>
-      <AppImage />
-      <AppButton label="Faça sua reserva!" link="reservas" />
-      <AppButton label="Cardápio" link="cardapio" target="_blank" />
-      <AppButton label="Whatsapp" link="contato" target="_blank" />
-      <AppButton label="Ver localização" link="localizacao" />
+      <Box
+        flex
+        width="medium"
+        background="background"
+        elevation="small"
+        align="center"
+        justify="center"
+        gap="medium"
+      >
+        <AppImage />
+        <AppButton label="Reservas" link="reservas" />
+        <AppButton label="Cardápio" link="cardapio" target="_blank" />
+        <AppButton label="Whatsapp" link="contato" target="_blank" />
+        <AppButton label="Localização" link="localizacao" />
+      </Box>
     </AppLayout>
   );
 };
