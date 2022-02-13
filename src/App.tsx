@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Grommet, ResponsiveContext } from "grommet";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+import { theme } from "./assets/theme";
+import { Address, Contact, Home, Menu, Reservation } from "./pages";
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grommet theme={theme} full>
+      <ResponsiveContext.Consumer>
+        {(size) => (
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home size={size} />} />
+              <Route path="/reservas" element={<Reservation size={size} />} />
+              <Route path="/cardapio" element={<Menu size={size} />} />
+              <Route path="/contato" element={<Contact size={size} />} />
+              <Route path="/localizacao" element={<Address size={size} />} />
+            </Routes>
+          </BrowserRouter>
+        )}
+      </ResponsiveContext.Consumer>
+    </Grommet>
   );
-}
+};
 
 export default App;
