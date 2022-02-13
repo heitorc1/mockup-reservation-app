@@ -15,6 +15,9 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
   const [value, setValue] = useState("one");
   const params = useParams();
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setValue(event.target.value);
+
   return (
     <AppLayout size={size}>
       <Box flex direction="column" gap="medium" justify="center">
@@ -32,14 +35,8 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
           name="doc"
           options={["Quadra 1", "Quadra 2", "Quadra 3", "Padel"]}
           value={value}
-          onChange={(event) => setValue(event.target.value)}
-          style={{
-            marginTop: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            flexWrap: "wrap",
-            height: "5rem",
-          }}
+          onChange={handleChange}
+          style={{ marginTop: "1rem", marginBottom: "1rem" }}
         />
 
         <Text margin={{ bottom: "0" }} style={{ fontWeight: "bold" }}>
