@@ -3,7 +3,14 @@ import { Grommet, ResponsiveContext } from "grommet";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { theme } from "./assets/theme";
-import { Address, Contact, Home, Menu, Reservation } from "./pages";
+import {
+  Address,
+  Contact,
+  Home,
+  Menu,
+  Reservation,
+  ReservationConfirmed,
+} from "./pages";
 import { NewReservation } from "./pages/NewReservation/NewReservation";
 
 const App: React.FC = () => {
@@ -18,6 +25,10 @@ const App: React.FC = () => {
               <Route
                 path="reservas/:date/:hour"
                 element={<NewReservation size={size} />}
+              />
+              <Route
+                path="reservas/confirmada"
+                element={<ReservationConfirmed size={size} />}
               />
               <Route path="cardapio" element={<Menu size={size} />} />
               <Route path="contato" element={<Contact size={size} />} />

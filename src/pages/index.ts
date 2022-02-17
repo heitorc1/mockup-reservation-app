@@ -4,5 +4,14 @@ import { Menu } from "./Menu/Menu";
 import { Contact } from "./Contact/Contact";
 import { Address } from "./Address/Address";
 import { NewReservation } from "./NewReservation/NewReservation";
+import { ReservationConfirmed } from "./ReservationConfirmed/ReservationConfirmed";
 
-export { Home, Reservation, Menu, Contact, Address, NewReservation };
+export {
+  Home,
+  Reservation,
+  Menu,
+  Contact,
+  Address,
+  NewReservation,
+  ReservationConfirmed,
+};
