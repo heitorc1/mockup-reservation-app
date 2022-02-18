@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button, Heading, Box, Collapsible, Layer } from "grommet";
-import { FormClose, LinkPrevious, Notification } from "grommet-icons";
+import { Button } from "grommet/components/Button";
+import { Heading } from "grommet/components/Heading";
+import { Box } from "grommet/components/Box";
+import { Collapsible } from "grommet/components/Collapsible";
+import { Layer } from "grommet/components/Layer";
+import { FormClose, LinkPrevious, Menu } from "grommet-icons";
 
-import { AppBar, AppFooter } from "../../components";
+import { AppBar, AppFooter, AppSidebar } from "../../components";
 import { Link, useLocation } from "react-router-dom";
 
 type Props = {
@@ -18,18 +22,22 @@ export const AppLayout: React.FC<Props> = ({ size, children, fill = true }) => {
   return (
     <Box fill={fill} gap="medium">
       <AppBar>
-        {location.pathname !== "/" ? (
-          <Link to="/">
-            <Button icon={<LinkPrevious />} />
-          </Link>
-        ) : null}
-        <Heading level="3" margin="none">
-          IPANEMA QUADRAS
-        </Heading>
-        <Button
-          icon={<Notification />}
-          onClick={() => setShowSidebar(!showSidebar)}
-        />
+        <Box flex direction="row" justify="around" align="center">
+          {location.pathname !== "/" ? (
+            <Link to="/">
+              <Button icon={<LinkPrevious />} />
+            </Link>
+          ) : (
+            <Menu size="large" color="primary" />
+          )}
+          <Heading level="3" margin="none">
+            IPANEMA QUADRAS
+          </Heading>
+          <Button
+            icon={<Menu />}
+            onClick={() => setShowSidebar((prevState: boolean) => !prevState)}
+          />
+        </Box>
       </AppBar>
       <Box direction="row" flex overflow={{ horizontal: "hidden" }}>
         <Box flex align="center" justify="center">
@@ -45,7 +53,7 @@ export const AppLayout: React.FC<Props> = ({ size, children, fill = true }) => {
               align="center"
               justify="center"
             >
-              sidebar
+              <AppSidebar />
             </Box>
           </Collapsible>
         ) : (
@@ -58,12 +66,12 @@ export const AppLayout: React.FC<Props> = ({ size, children, fill = true }) => {
               direction="row"
             >
               <Button
-                icon={<FormClose />}
+                icon={<FormClose size="medium" />}
                 onClick={() => setShowSidebar(false)}
               />
             </Box>
             <Box fill background="background" align="center" justify="center">
-              sidebar
+              <AppSidebar />
             </Box>
           </Layer>
         )}

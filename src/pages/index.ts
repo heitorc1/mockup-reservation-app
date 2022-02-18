@@ -1,3 +1,5 @@
+import { ReservationCancelled } from "./ReservationCancelled/ReservationCancelled";
+import { ManageBooking } from "./ManageBooking/ManageBooking";
 import { Home } from "./Home/Home";
 import { Reservation } from "./Reservation/Reservation";
 import { Menu } from "./Menu/Menu";
@@ -14,4 +16,6 @@ export {
   Address,
   NewReservation,
   ReservationConfirmed,
+  ReservationCancelled,
+  ManageBooking,
 };

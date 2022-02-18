@@ -7,8 +7,10 @@ import {
   Address,
   Contact,
   Home,
+  ManageBooking,
   Menu,
   Reservation,
+  ReservationCancelled,
   ReservationConfirmed,
 } from "./pages";
 import { NewReservation } from "./pages/NewReservation/NewReservation";
@@ -29,6 +31,14 @@ const App: React.FC = () => {
               <Route
                 path="reservas/confirmada"
                 element={<ReservationConfirmed size={size} />}
+              />
+              <Route
+                path="reservas/cancelada"
+                element={<ReservationCancelled size={size} />}
+              />
+              <Route
+                path="/gerenciar-reservas"
+                element={<ManageBooking size={size} />}
               />
               <Route path="cardapio" element={<Menu size={size} />} />
               <Route path="contato" element={<Contact size={size} />} />

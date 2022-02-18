@@ -50,7 +50,7 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
 
   return (
     <AppLayout size={size}>
-      <Box flex direction="column" gap="medium" justify="center">
+      <Box flex direction="column" gap="medium" justify="start">
         <Text
           margin={{ bottom: "0" }}
           style={{ fontWeight: "bold", textAlign: "center" }}
@@ -116,7 +116,12 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
           </FormField>
 
           <Box direction="row" gap="medium" justify="center">
-            <Button type="submit" primary label="Reservar" />
+            <Button
+              type="submit"
+              primary
+              label="Reservar"
+              style={{ marginTop: "1rem" }}
+            />
           </Box>
         </Form>
       </Box>
