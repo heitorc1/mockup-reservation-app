@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grommet, ResponsiveContext } from "grommet";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -16,6 +16,8 @@ import {
 import { NewReservation } from "./pages/NewReservation/NewReservation";
 
 const App: React.FC = () => {
+  const [reservationDate, setReservationDate] = useState<string>("");
+
   return (
     <Grommet theme={theme} full>
       <ResponsiveContext.Consumer>
@@ -23,10 +25,23 @@ const App: React.FC = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home size={size} />} />
-              <Route path="reservas" element={<Reservation size={size} />} />
               <Route
-                path="reservas/:date/:hour"
-                element={<NewReservation size={size} />}
+                path="reservas"
+                element={
+                  <Reservation
+                    size={size}
+                    setReservationDate={setReservationDate}
+                  />
+                }
+              />
+              <Route
+                path="reservas/:day/:hour/:square"
+                element={
+                  <NewReservation
+                    size={size}
+                    reservationDate={reservationDate}
+                  />
+                }
               />
               <Route
                 path="reservas/confirmada"

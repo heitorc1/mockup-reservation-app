@@ -6,12 +6,18 @@ type ButtonProps = {
   label: string;
   link: string;
   target?: string;
+  color?: string;
+  fontColor?: string;
+  disabled?: boolean;
 };
 
 export const AppButton: React.FC<ButtonProps> = ({
   label,
   link,
   target = "_self",
+  color = "secondaryLight",
+  fontColor = "#000",
+  disabled = false,
 }) => {
   return (
     <Link to={link} target={target} style={{ textDecoration: "none" }}>
@@ -26,8 +32,9 @@ export const AppButton: React.FC<ButtonProps> = ({
         <Button
           primary
           label={label}
-          color="secondaryLight"
-          style={{ color: "#000" }}
+          color={color}
+          style={{ color: fontColor }}
+          disabled={disabled}
         />
       </div>
     </Link>

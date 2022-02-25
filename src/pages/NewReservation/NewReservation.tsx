@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useMemo, useState } from "react";
 import { AppLayout, AppModal } from "../../components";
 import { TextInput } from "grommet/components/TextInput";
 import { Text } from "grommet/components/Text";
@@ -9,9 +9,11 @@ import { RadioButtonGroup } from "grommet/components/RadioButtonGroup";
 import { Form } from "grommet/components/Form";
 import { FormField } from "grommet/components/FormField";
 import { Button } from "grommet/components/Button";
+import { createBooking } from "../../services/api";
 
 type Props = {
   size: string;
+  reservationDate: string;
 };
 
 type TInput = {
@@ -19,16 +21,55 @@ type TInput = {
   name: string;
   phone: string;
   email: string;
+  date: string;
 };
 
-export const NewReservation: React.FC<Props> = ({ size }) => {
-  const params = useParams();
+type TParams = {
+  day: string;
+  hour: string;
+  square: string;
+};
+
+export const NewReservation: React.FC<Props> = ({ size, reservationDate }) => {
+  const params = useParams<TParams>();
   const [show, setShow] = useState(false);
+
+  const formatedDay = useMemo(() => {
+    if (params.day) {
+      const date = new Date(params.day);
+      const correctDate = new Date(
+        date.getTime() + Math.abs(date.getTimezoneOffset() * 60000)
+      );
+
+      return (
+        correctDate.getDate() +
+        "/" +
+        (correctDate.getMonth() + 1) +
+        "/" +
+        correctDate.getFullYear()
+      );
+    }
+  }, [params.day]);
+
+  const formatedHour = useMemo(() => {
+    if (params.hour) {
+      return DEFAULT_HOUR[+params.hour - 6].hour;
+    }
+  }, [params.hour]);
+
+  const selectedSquare = useMemo(() => {
+    if (params.square) {
+      return params.square;
+    }
+    return "";
+  }, [params.square]);
+
   const [input, setInput] = useState<TInput>({
     name: "",
     phone: "",
-    square: "",
+    square: selectedSquare,
     email: "",
+    date: reservationDate,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -44,8 +85,14 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
 
   const handleModal = () => setShow((prevState) => !prevState);
 
-  const handleSave = () => {
-    // salvar no banco
+  const handleSave = async () => {
+    await createBooking({
+      date: input.date,
+      square: input.square,
+      email: input.email,
+      name: input.name,
+      phone: input.phone,
+    });
   };
 
   return (
@@ -55,24 +102,23 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
           margin={{ bottom: "0" }}
           style={{ fontWeight: "bold", textAlign: "center" }}
         >
-          {"Reserva para " + params.date}
+          {"Reserva para " + formatedDay}
         </Text>
         <Text style={{ fontWeight: "bold", textAlign: "center" }}>
-          {params.hour && " " + DEFAULT_HOUR[parseInt(params.hour)]}
+          {formatedHour}
         </Text>
 
         <Form onSubmit={handleSubmit}>
           <FormField
             name="square"
             htmlFor="square-input"
-            label="Selecione a quadra *"
+            label="Quadra selecionada"
             required
           >
             <RadioButtonGroup
               name="square"
-              options={["Quadra 1", "Quadra 2", "Quadra 3", "Padel"]}
-              value={input.square}
-              onChange={handleChange}
+              options={[selectedSquare]}
+              value={selectedSquare}
               style={{ marginBottom: "1rem" }}
             />
           </FormField>
@@ -143,7 +189,7 @@ export const NewReservation: React.FC<Props> = ({ size }) => {
                   primary
                   label="Reservar"
                   color="statusOk"
-                  onSubmit={handleSave}
+                  onClick={handleSave}
                 />
               </Link>
             </Box>

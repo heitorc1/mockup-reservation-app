@@ -1,76 +1,150 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "grommet/components/Button";
-import { DEFAULT } from "./data";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { Select } from "grommet/components/Select";
+import { Box } from "grommet/components/Box";
+import { getBookingByDate } from "../../../services/api";
 import { DEFAULT_HOUR } from "./hours";
-import { Link } from "react-router-dom";
+import { AppButton } from "../../../components";
 
 type Props = {
   day: Date;
+  setReservationDate: Dispatch<SetStateAction<string>>;
 };
 
-type DataType = {
-  id: number;
-  day: string;
-  hour: boolean[];
+const defaultAvailability = [
+  { label: "quadra 1", availability: true },
+  { label: "quadra 2", availability: true },
+  { label: "quadra 3", availability: true },
+  { label: "padel", availability: true },
+];
+
+type TAvailable = {
+  label: string;
+  availability: boolean;
 };
 
-export const AvailableHours: React.FC<Props> = ({ day }) => {
-  const [hours, setHours] = useState<boolean[]>([]);
+export const AvailableHours: React.FC<Props> = ({
+  day,
+  setReservationDate,
+}) => {
+  const [value, setValue] = useState({ id: 6 });
+  const [available, setAvailable] = useState<TAvailable[]>(defaultAvailability);
+
+  const hour = useMemo(() => value.id, [value.id]);
+
+  const dateFormated = useMemo(() => {
+    const reservationDate = new Date(
+      day.getUTCFullYear(),
+      day.getUTCMonth(),
+      day.getUTCDate(),
+      hour
+    );
+    const correctDate = new Date(
+      reservationDate.getTime() +
+        Math.abs(reservationDate.getTimezoneOffset() * 60000 - 10800000)
+    );
+    console.log(reservationDate);
+
+    const postgresFormat =
+      correctDate.getFullYear() +
+      "-" +
+      (correctDate.getMonth() + 1) +
+      "-" +
+      correctDate.getDate() +
+      " " +
+      correctDate.getHours() +
+      ":00:00.000";
+    setReservationDate(toIsoString(correctDate)); // postgresFormat
+    return postgresFormat;
+  }, [day, hour, setReservationDate]);
+
+  const getDisponibility = useCallback(async (date: string) => {
+    setAvailable((prevState) => {
+      const object = prevState.map((_, index) => ({
+        label: defaultAvailability[index].label,
+        availability: true,
+      }));
+      return object;
+    });
+    const { data } = await getBookingByDate(encodeURIComponent(date));
+    setAvailable((prevState) => {
+      const newObject = prevState.map((entry) => {
+        const exists = data.square?.find((local) => local === entry.label);
+        if (exists) {
+          return { ...entry, availability: false };
+        } else {
+          return { ...entry, availability: true };
+        }
+      });
+      return newObject;
+    });
+  }, []);
 
   useEffect(() => {
-    const data: DataType[] = DEFAULT;
-    const date = day;
-    const month =
-      date.getMonth() + 1 < 10
-        ? "0" + (date.getMonth() + 1)
-        : date.getMonth() + 1;
-    const formatedDate =
-      date.getDate() + "/" + month + "/" + date.getFullYear();
-    const selectedDay = data.filter((row) => row.day === formatedDate);
-    setHours(selectedDay[0].hour);
-  }, [day]);
+    getDisponibility(dateFormated);
+  }, [dateFormated, getDisponibility]);
 
-  const getLink = (condition: boolean, day: Date, index: number) => {
-    if (!condition) {
-      return `${encodeURIComponent(day.toLocaleDateString())}/${index}`;
-    } else {
-      return "#";
-    }
-  };
+  return (
+    <Box pad="small">
+      <Select
+        options={DEFAULT_HOUR}
+        labelKey="hour"
+        valueKey="id"
+        value={{ id: value.id }}
+        onChange={({ option }) => setValue(option)}
+      />
+      <Box
+        flex
+        direction="column"
+        justify="center"
+        align="center"
+        style={{ marginTop: "1rem" }}
+        gap="medium"
+      >
+        {available.map((row) => (
+          <AppButton
+            key={row.label}
+            link={`/reservas/${encodeURIComponent(
+              day.toISOString()
+            )}/${hour}/${encodeURIComponent(row.label)}`}
+            label={capitalizeFirstLetter(row.label)}
+            color={row.availability ? "statusOk" : "statusError"}
+            fontColor={row.availability ? "#fff" : "#000"}
+            disabled={row.availability ? false : true}
+          />
+        ))}
+      </Box>
+    </Box>
+  );
+};
 
-  const buttonColor = (input: boolean) => {
-    if (input) {
-      return {
-        color: "#000",
-      };
-    } else {
-      return {
-        color: "#fff",
-      };
-    }
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function toIsoString(date: Date) {
+  const pad = function (num: number) {
+    return (num < 10 ? "0" : "") + num;
   };
 
   return (
-    <>
-      {hours ? (
-        hours.map((row, index) => (
-          <Link to={getLink(row, day, index)} key={index}>
-            <Button
-              primary
-              color={row ? "statusError" : "statusOk"}
-              margin="small"
-              label={
-                row
-                  ? `${DEFAULT_HOUR[index]} - Ocupado`
-                  : `${DEFAULT_HOUR[index]} - Livre`
-              }
-              style={buttonColor(row)}
-            />
-          </Link>
-        ))
-      ) : (
-        <p>Não carregou</p>
-      )}
-    </>
+    date.getFullYear() +
+    "-" +
+    pad(date.getMonth() + 1) +
+    "-" +
+    pad(date.getDate()) +
+    "T" +
+    pad(date.getHours()) +
+    ":" +
+    pad(date.getMinutes()) +
+    ":" +
+    pad(date.getSeconds()) +
+    ".000Z"
   );
-};
+}

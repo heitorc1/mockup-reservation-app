@@ -19,7 +19,10 @@ export const ReservationCalendar: React.FC<Props> = ({ setDay, day }) => {
   const handleSelect = (date: string | string[]) => {
     if (typeof date === "string") {
       const newDate = new Date(date);
-      setDay(newDate);
+      const convertedDate = new Date(
+        newDate.getTime() + newDate.getTimezoneOffset() * 60000
+      );
+      setDay(new Date(convertedDate));
     }
   };
 
